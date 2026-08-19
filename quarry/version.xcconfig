@@ -1,8 +1,8 @@
 // Quarry Version Configuration
 // This file contains the version and build number for the app
 
-MARKETING_VERSION = 0.0.51
-CURRENT_PROJECT_VERSION = 314
+MARKETING_VERSION = 0.0.52
+CURRENT_PROJECT_VERSION = 315
 
 // Domain and GitHub configuration
 APP_DOMAIN = ribban.co/quarry

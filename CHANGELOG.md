@@ -2,6 +2,13 @@
 
 # Quarry Release Notes
 
+## [0.0.52] – 2026-08-19
+
+Quarry is bring-your-own-key, so every AI surface can be reached before a key exists. Until now they just failed — silently in some places, with a generic "Something went wrong" in others.
+
+- **AI now tells you when it isn't set up.** Asking the notebook or table agent, generating SQL with ⌘K, or running a natural-language search without an API key shows what's missing and a button that opens Settings → AI, instead of a dead end. The natural-language search in the table view previously gave no feedback at all — the failure only reached the debug log.
+- **Automatic SQL error suggestions stay quiet.** They're triggered by a failed query rather than by you, so without a key they're skipped outright rather than flashing a loading popup that disappears.
+
 ## [0.0.51] – 2026-08-19
 
 The app is now Quarry, built and maintained by RIBBAN AB. This release is the rebrand itself — no feature or behavior changes.
