@@ -1,6 +1,13 @@
 # Changelog
 
-# Pluk Release Notes
+# Quarry Release Notes
+
+## [0.0.51] – 2026-08-19
+
+The app is now Quarry, built and maintained by RIBBAN AB. This release is the rebrand itself — no feature or behavior changes.
+
+- **New name throughout.** Menus, windows, settings, the built-in assistant, and the app icon are all Quarry. The About window credits RIBBAN AB and records that Quarry is based on Pluk, © Pluk, Inc., under the AGPL.
+- **Your data carries over untouched.** Saved connections, passwords, file bookmarks, and query history all keep working. The keychain service, encryption salts, and Application Support location deliberately keep their original names so nothing is orphaned by the rename.
 
 ## [0.0.50-beta.1] – 2026-08-18
 

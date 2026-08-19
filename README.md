@@ -118,7 +118,7 @@ If signing fails, select your own development team in Xcode or build locally wit
 
 ### Community builds
 
-The database client builds without access to Quarry's hosted services. When `quarry/Secrets.xcconfig` is absent, PostHog, Sentry, WorkOS sign-in, Convex OAuth, and funded Bedrock AI are not configured. Manual Convex connections remain available.
+The database client builds without access to the services behind official builds. When `quarry/Secrets.xcconfig` is absent, PostHog, Sentry, WorkOS sign-in, Convex OAuth, and funded Bedrock AI are not configured. Manual Convex connections remain available.
 
 Maintainers can copy `quarry/Secrets.xcconfig.example` to the ignored `quarry/Secrets.xcconfig` for official builds. Those values are embedded in the app binary and must not be treated as server-side secrets.
 
@@ -145,6 +145,6 @@ Please report vulnerabilities privately as described in [SECURITY.md](SECURITY.m
 
 Quarry's source code is available under the [GNU Affero General Public License v3.0](LICENSE).
 
-Quarry is a fork of [Pluk](https://github.com/pluk-inc/Pluk), © Pluk, Inc., and is not affiliated with or endorsed by Pluk, Inc. Pluk's marks remain subject to the [Pluk Trademark Policy](TRADEMARKS.md).
+Copyright © 2026 RIBBAN AB. Based on Pluk, © Pluk, Inc.
 
-The source license does not grant permission to use the Quarry name, logo, icon, or visual identity for another product.
+The source license does not grant permission to use the Quarry name, logo, icon, or visual identity for another product. Pluk's marks remain subject to the [Pluk Trademark Policy](TRADEMARKS.md).
