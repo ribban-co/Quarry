@@ -880,8 +880,10 @@ extension SQLEditorView {
     }
     
     private func getAIErrorSuggestion(for query: String, error: Error) async {
+        // Suggestions are automatic, not user-initiated — without a key there is
+        // nothing to nag about, so skip instead of flashing an empty popup.
         let shouldShowSuggestion = await MainActor.run {
-            enableAIFeatures && showAIErrorSuggestions
+            enableAIFeatures && showAIErrorSuggestions && AISetup.isConfigured
         }
         guard shouldShowSuggestion else { return }
 

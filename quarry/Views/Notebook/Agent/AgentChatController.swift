@@ -11,6 +11,9 @@ final class AgentChatController {
     private(set) var isStreaming = false
     private(set) var streamingParts: [StreamingPart] = []
     private(set) var error: String?
+    /// Drives the banner's affordance: a missing key gets an "Open AI Settings"
+    /// button, any other failure is just text.
+    private(set) var errorIsSetupIssue = false
 
     var selectedConnections: [Connection] = []
 
@@ -162,6 +165,13 @@ final class AgentChatController {
         messages.append(userMessage)
         trackMessageCharacters(userMessage)
 
+        // Keep the message — the input already cleared it — and explain why
+        // nothing is happening instead of failing on the first request.
+        guard AISetup.isConfigured else {
+            showSetupRequired()
+            return false
+        }
+
         isStreaming = true
         notebookDataController?.isAgentStreaming = true
         startStreamingTask(for: chat)
@@ -186,6 +196,10 @@ final class AgentChatController {
     func retry(from messageId: UUID) {
         guard !isStreaming else { return }
         guard let chat = currentChat else { return }
+        guard AISetup.isConfigured else {
+            showSetupRequired()
+            return
+        }
         guard let index = messages.firstIndex(where: { $0.id == messageId }) else { return }
 
         let toDelete = Array(messages[index...])
@@ -205,6 +219,18 @@ final class AgentChatController {
         guard let msg = messages.first(where: { $0.id == messageId }) else { return }
         msg.feedback = feedback
         save()
+    }
+
+    // MARK: - Errors
+
+    private func showSetupRequired() {
+        errorIsSetupIssue = true
+        error = AISetup.message
+    }
+
+    private func clearError() {
+        errorIsSetupIssue = false
+        error = nil
     }
 
     // MARK: - Agent Loop
@@ -233,7 +259,7 @@ final class AgentChatController {
 
     private func performAgentLoop(chat: AgentChat, taskID: UUID) async {
         streamingParts = []
-        error = nil
+        clearError()
         engine.clearPendingCreations()
 
         // Pre-fetch Convex deployments so the agent knows available environments
@@ -353,7 +379,8 @@ final class AgentChatController {
             }
         } catch {
             if !Task.isCancelled && streamingTaskID == taskID {
-                self.error = error.localizedDescription
+                self.errorIsSetupIssue = AISetup.isMissingKey(error)
+                self.error = AISetup.description(for: error)
             }
         }
 

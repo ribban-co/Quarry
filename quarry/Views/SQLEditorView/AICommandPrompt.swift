@@ -15,7 +15,8 @@ struct AICommandPrompt: View {
     let selectedText: String
     @State private var userPrompt: String = ""
     @State private var isGenerating: Bool = false
-    @State private var hasError: Bool = false
+    @State private var errorMessage: String?
+    @State private var errorIsSetupIssue: Bool = false
     @FocusState private var isTextFieldFocused: Bool
     @Environment(\.colorScheme) var colorScheme
     
@@ -26,7 +27,7 @@ struct AICommandPrompt: View {
                 .textFieldStyle(.plain)
                 .focused($isTextFieldFocused)
                 .onChange(of: userPrompt) { _, _ in
-                    hasError = false
+                    errorMessage = nil
                 }
             
             HStack {
@@ -60,11 +61,8 @@ struct AICommandPrompt: View {
                 if isGenerating {
                     ProgressView()
                         .controlSize(.mini)
-                } else if hasError {
-                    Text("Something went wrong. Please try again.")
-                        .font(.caption)
-                        .foregroundColor(.red)
-                        .lineLimit(1)
+                } else if let errorMessage {
+                    AISetupNotice(text: errorMessage, isSetupIssue: errorIsSetupIssue)
                 }
                 
                 if !isGenerating {
@@ -100,8 +98,16 @@ struct AICommandPrompt: View {
         let userMessage = userPrompt.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !userMessage.isEmpty else { return }
 
+        guard await AISetup.isConfigured else {
+            await MainActor.run {
+                errorIsSetupIssue = true
+                errorMessage = AISetup.shortMessage
+            }
+            return
+        }
+
         isGenerating = true
-        hasError = false
+        errorMessage = nil
 
         do {
             var result = ""
@@ -127,11 +133,12 @@ struct AICommandPrompt: View {
                 }
             }
 
-            hasError = false
+            errorMessage = nil
         } catch {
             await MainActor.run {
                 isGenerating = false
-                hasError = true
+                errorIsSetupIssue = AISetup.isMissingKey(error)
+                errorMessage = errorIsSetupIssue ? AISetup.shortMessage : "Something went wrong. Please try again."
             }
 
             debugLog(error)

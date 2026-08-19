@@ -252,13 +252,13 @@ final class AgentMessageListController: NSViewController {
 
     private func updateErrorBanner() {
         if let errorText = chatController.error {
-            showErrorBanner(errorText)
+            showErrorBanner(errorText, isSetupIssue: chatController.errorIsSetupIssue)
         } else {
             removeErrorBanner()
         }
     }
 
-    private func showErrorBanner(_ text: String) {
+    private func showErrorBanner(_ text: String, isSetupIssue: Bool) {
         removeErrorBanner()
 
         let banner = NSView()
@@ -283,7 +283,10 @@ final class AgentMessageListController: NSViewController {
         banner.addSubview(iconPill)
 
         let icon = NSImageView()
-        icon.image = NSImage(systemSymbolName: "exclamationmark.circle", accessibilityDescription: nil)
+        icon.image = NSImage(
+            systemSymbolName: isSetupIssue ? "sparkles" : "exclamationmark.circle",
+            accessibilityDescription: nil
+        )
         icon.contentTintColor = NSColor(name: nil) { appearance in
             appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
                 ? NSColor(red: 1.0, green: 0.45, blue: 0.4, alpha: 1.0)
@@ -293,7 +296,7 @@ final class AgentMessageListController: NSViewController {
         icon.translatesAutoresizingMaskIntoConstraints = false
         iconPill.addSubview(icon)
 
-        let titleLabel = NSTextField(labelWithString: "Something went wrong")
+        let titleLabel = NSTextField(labelWithString: isSetupIssue ? AISetup.title : "Something went wrong")
         titleLabel.font = .systemFont(ofSize: 13, weight: .medium)
         titleLabel.textColor = .labelColor
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -323,10 +326,29 @@ final class AgentMessageListController: NSViewController {
             detailLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
             detailLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 2),
             detailLabel.trailingAnchor.constraint(equalTo: banner.trailingAnchor, constant: -14),
-            detailLabel.bottomAnchor.constraint(lessThanOrEqualTo: banner.bottomAnchor, constant: -12),
 
             banner.heightAnchor.constraint(greaterThanOrEqualToConstant: 54),
         ])
+
+        if isSetupIssue {
+            let settingsButton = NSButton(
+                title: AISetup.actionTitle,
+                target: self,
+                action: #selector(openAISettings)
+            )
+            settingsButton.bezelStyle = .rounded
+            settingsButton.controlSize = .small
+            settingsButton.translatesAutoresizingMaskIntoConstraints = false
+            banner.addSubview(settingsButton)
+
+            NSLayoutConstraint.activate([
+                settingsButton.leadingAnchor.constraint(equalTo: detailLabel.leadingAnchor),
+                settingsButton.topAnchor.constraint(equalTo: detailLabel.bottomAnchor, constant: 8),
+                settingsButton.bottomAnchor.constraint(equalTo: banner.bottomAnchor, constant: -12),
+            ])
+        } else {
+            detailLabel.bottomAnchor.constraint(lessThanOrEqualTo: banner.bottomAnchor, constant: -12).isActive = true
+        }
 
         stackView.addArrangedSubview(banner)
         banner.leadingAnchor.constraint(equalTo: stackView.leadingAnchor).isActive = true
@@ -341,6 +363,10 @@ final class AgentMessageListController: NSViewController {
 
         errorBanner = banner
         scrollToBottom()
+    }
+
+    @objc private func openAISettings() {
+        AISetup.openSettings()
     }
 
     private func removeErrorBanner() {

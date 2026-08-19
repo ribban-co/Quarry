@@ -22,6 +22,8 @@ struct AISearchView: View {
     @Environment(ConnectionInstance.self) private var instance
     @FocusState private var isSearchFocused: Bool
     @State private var search: String = ""
+    @State private var noticeMessage: String?
+    @State private var noticeIsSetupIssue: Bool = false
     
     var body: some View {
         VStack(spacing: 6) {
@@ -69,8 +71,13 @@ struct AISearchView: View {
             leftToolsSection
                 .padding(.bottom, 4)
                 .padding(.leading, 6)
-            
-            Spacer()
+
+            if let noticeMessage {
+                AISetupNotice(text: noticeMessage, isSetupIssue: noticeIsSetupIssue)
+                    .padding(.bottom, 4)
+            }
+
+            Spacer(minLength: 8)
             
             // Right side controls
             rightControlsSection
@@ -167,6 +174,9 @@ struct AISearchView: View {
                     await processNaturalLanguageQuery(search: search)
                 }
             }
+            .onChange(of: search) { _, _ in
+                noticeMessage = nil
+            }
             .disabled(processingStage != .idle)
             .padding(.bottom, processingStage != .idle ? 2 : 0)
     }
@@ -196,7 +206,16 @@ struct AISearchView: View {
     private func processNaturalLanguageQuery(search: String) async {
         guard !search.isEmpty else { return }
 
+        guard await AISetup.isConfigured else {
+            await MainActor.run {
+                noticeIsSetupIssue = true
+                noticeMessage = AISetup.shortMessage
+            }
+            return
+        }
+
         await MainActor.run {
+            noticeMessage = nil
             processingStage = .writingQuery
         }
 
@@ -251,12 +270,9 @@ struct AISearchView: View {
     
     @MainActor
     private func handleQueryError(_ error: Error) async {
-        if let localizedError = error as? LocalizedError,
-           let description = localizedError.errorDescription {
-            debugLog("Error: \(description)")
-        } else {
-            debugLog("Error: Could not create Message: \(error.localizedDescription)")
-        }
+        debugLog("Error: \(AISetup.description(for: error))")
+        noticeIsSetupIssue = AISetup.isMissingKey(error)
+        noticeMessage = noticeIsSetupIssue ? AISetup.shortMessage : "Couldn't generate a query. Please try again."
         processingStage = .idle
     }
 }
