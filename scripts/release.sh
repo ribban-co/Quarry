@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Release Pluk via Amore, then mirror the Amore appcast to Pluk's legacy
+# Release Quarry via Amore, then mirror the Amore appcast to Pluk's legacy
 # Sparkle URLs so existing installs keep receiving updates.
 #
 # Usage:
@@ -14,7 +14,7 @@
 #   scripts/release.sh --skip-r2 beta 42
 #
 # Source of truth:
-#   - pluk/version.xcconfig -> MARKETING_VERSION, CURRENT_PROJECT_VERSION
+#   - quarry/version.xcconfig -> MARKETING_VERSION, CURRENT_PROJECT_VERSION
 #   - CHANGELOG.md          -> release notes, heading: ## [X.Y.Z] - YYYY-MM-DD
 #
 # Important:
@@ -22,24 +22,24 @@
 #   - Pluk's installed apps check https://r2.pluk.sh/appcast.xml and
 #     https://r2.pluk.sh/appcast-prerelease.xml. Do not strand those URLs.
 #   - The existing Sparkle private key in private/sparkle_ed_private_key must
-#     match SUPublicEDKey in pluk/Info.plist and must be the key imported into
+#     match SUPublicEDKey in quarry/Info.plist and must be the key imported into
 #     Amore for bundle id doc.pluk.
 
 set -euo pipefail
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-VERSION_CONFIG="$PROJECT_ROOT/pluk/version.xcconfig"
+VERSION_CONFIG="$PROJECT_ROOT/quarry/version.xcconfig"
 CHANGELOG="$PROJECT_ROOT/CHANGELOG.md"
-INFO_PLIST="$PROJECT_ROOT/pluk/Info.plist"
+INFO_PLIST="$PROJECT_ROOT/quarry/Info.plist"
 SPARKLE_PRIVATE_KEY="$PROJECT_ROOT/private/sparkle_ed_private_key"
-SPARKLE_PUBLIC_KEY_FILE="$PROJECT_ROOT/pluk/sparkle-public-ed-key.txt"
+SPARKLE_PUBLIC_KEY_FILE="$PROJECT_ROOT/quarry/sparkle-public-ed-key.txt"
 R2_CONFIG_FILE="$PROJECT_ROOT/private/r2-config"
 SENTRY_CONFIG_FILE="$PROJECT_ROOT/private/sentry-config"
 
-APP_NAME="Pluk"
+APP_NAME="Quarry"
 BUNDLE_ID="doc.pluk"
 SCHEME="Collection"
-GITHUB_RELEASE_REPO="pluk-inc/Pluk"
+GITHUB_RELEASE_REPO="ribban-co/Quarry"
 LEGACY_STABLE_APPCAST_URL="https://r2.pluk.sh/appcast.xml"
 LEGACY_PRERELEASE_APPCAST_URL="https://r2.pluk.sh/appcast-prerelease.xml"
 AMORE_APPCAST_URL="${AMORE_APPCAST_URL:-https://releases.pluk.sh/v1/apps/doc.pluk/appcast.xml}"
@@ -158,13 +158,10 @@ validate_sparkle_continuity() {
 
     local signer
     signer="$(command -v sign_update || true)"
-    if [[ -z "$signer" && -x /Users/fauzaan/Desktop/Pluk/Sparkle/bin/sign_update ]]; then
-        signer="/Users/fauzaan/Desktop/Pluk/Sparkle/bin/sign_update"
-    fi
     if [[ -n "$signer" ]]; then
         local tmp
         tmp="$(mktemp)"
-        printf 'pluk sparkle continuity check\n' > "$tmp"
+        printf 'quarry sparkle continuity check\n' > "$tmp"
         local signature
         if signature="$("$signer" "$tmp" -f "$SPARKLE_PRIVATE_KEY" -p 2>/dev/null)"; then
             local amore_for_verify
@@ -341,7 +338,7 @@ fi
 echo
 echo "Version"
 if [[ "$current_marketing_version" != "$VERSION" || "$current_build" != "$BUILD" ]]; then
-    echo "  updating pluk/version.xcconfig: $current_marketing_version ($current_build) -> $VERSION ($BUILD)"
+    echo "  updating quarry/version.xcconfig: $current_marketing_version ($current_build) -> $VERSION ($BUILD)"
     write_xcconfig MARKETING_VERSION "$VERSION"
     write_xcconfig CURRENT_PROJECT_VERSION "$BUILD"
     git add "$VERSION_CONFIG"
@@ -360,7 +357,7 @@ fi
 echo
 echo "Archive"
 ARCHIVE_PATH="$(mktemp -d)/$APP_NAME.xcarchive"
-xcodebuild -project "$PROJECT_ROOT/Pluk.xcodeproj" \
+xcodebuild -project "$PROJECT_ROOT/Quarry.xcodeproj" \
     -scheme "$SCHEME" \
     -configuration Release \
     -archivePath "$ARCHIVE_PATH" \
@@ -403,7 +400,7 @@ fi
 
 echo
 echo "GitHub release"
-DMG_PATH="$(mktemp -d)/Pluk-$VERSION.dmg"
+DMG_PATH="$(mktemp -d)/Quarry-$VERSION.dmg"
 curl -fsSL -o "$DMG_PATH" "$DMG_URL"
 
 TAG="v$VERSION"
@@ -421,13 +418,13 @@ else
     if [[ "$RELEASE_TYPE" == "stable" ]]; then
         gh release create "$TAG" \
             --repo "$GITHUB_RELEASE_REPO" \
-            --title "Pluk $VERSION" \
+            --title "Quarry $VERSION" \
             --notes "$NOTES" \
             "$DMG_PATH"
     else
         gh release create "$TAG" \
             --repo "$GITHUB_RELEASE_REPO" \
-            --title "Pluk $VERSION" \
+            --title "Quarry $VERSION" \
             --notes "$NOTES" \
             --prerelease \
             "$DMG_PATH"

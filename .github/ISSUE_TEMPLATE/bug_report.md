@@ -1,6 +1,6 @@
 ---
 name: 🐛 Bug Report
-about: Something isn't working in Pluk
+about: Something isn't working in Quarry
 title: '[BUG] '
 labels: ['bug']
 assignees: ''
@@ -19,7 +19,7 @@ assignees: ''
 3. 
 
 ## Your setup
-- **Pluk version**: 
+- **Quarry version**: 
 - **macOS version**: 
 - **Database**: (e.g. PostgreSQL, MongoDB, etc.)
 

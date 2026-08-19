@@ -97,7 +97,7 @@ iOSInjectionProject/
 # Local environment files (never commit real keys)
 .env
 .env.local
-pluk/Secrets.xcconfig
+quarry/Secrets.xcconfig
 
 # Private maintainer and agent configuration
 .agents/

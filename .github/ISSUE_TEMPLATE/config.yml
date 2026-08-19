@@ -1,11 +1,5 @@
 blank_issues_enabled: false
 contact_links:
   - name: 🌐 Visit Website
-    url: https://www.pluk.sh/
-    about: Learn more about Pluk and download the latest version
-  - name: 📖 Documentation
-    url: https://docs.pluk.sh/
-    about: Check our documentation for guides and tutorials
-  - name: 💬 Discord Community
-    url: https://discord.gg/pluk
-    about: Join our Discord for real-time help and discussions
+    url: https://ribban.co/quarry
+    about: Learn more about Quarry and download the latest version

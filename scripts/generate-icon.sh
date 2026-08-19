@@ -12,8 +12,8 @@
 set -euo pipefail
 cd "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
-ASSETS="pluk/Resources/Assets.xcassets"
-ICON="pluk/Resources/AppIcon.icon"
+ASSETS="quarry/Resources/Assets.xcassets"
+ICON="quarry/Resources/AppIcon.icon"
 
 mkdir -p "$ICON/Assets"
 

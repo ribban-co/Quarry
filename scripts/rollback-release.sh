@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Roll back a Pluk Amore release.
+# Roll back a Quarry Amore release.
 #
 # Default action: unpublish the release on Amore and delete the matching GitHub
 # release + tag. The old R2 Sparkle feeds are then refreshed from Amore so
@@ -17,7 +17,7 @@ set -euo pipefail
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 BUNDLE_ID="doc.pluk"
-GITHUB_RELEASE_REPO="pluk-inc/Pluk"
+GITHUB_RELEASE_REPO="ribban-co/Quarry"
 AMORE_APPCAST_URL="${AMORE_APPCAST_URL:-https://releases.pluk.sh/v1/apps/doc.pluk/appcast.xml}"
 R2_CONFIG_FILE="$PROJECT_ROOT/private/r2-config"
 

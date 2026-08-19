@@ -1,6 +1,6 @@
 ---
 name: ❓ Question
-about: Ask a question about using Pluk
+about: Ask a question about using Quarry
 title: '[QUESTION] '
 labels: ['question']
 assignees: ''

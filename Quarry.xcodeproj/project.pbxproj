@@ -1,0 +1,794 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9A0216502DFD9BF300F7FCF3 /* BSON in Frameworks */ = {isa = PBXBuildFile; productRef = 9A02164F2DFD9BF300F7FCF3 /* BSON */; };
+		9A25D38A2F65C24A003259CB /* ConvexMobile in Frameworks */ = {isa = PBXBuildFile; productRef = 9A25D3892F65C24A003259CB /* ConvexMobile */; };
+		9A529E992D23CFC900618009 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9A529E732D23CFC700618009 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9A529E7A2D23CFC700618009;
+			remoteInfo = collection;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		9A529E7B2D23CFC700618009 /* Quarry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Quarry.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9A529E8E2D23CFC900618009 /* QuarryTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QuarryTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9A529E982D23CFC900618009 /* QuarryUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QuarryUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		9A2923022DBB8F4A0032F301 /* Exceptions for "quarry" folder in "Quarry" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+				version.xcconfig,
+			);
+			target = 9A529E7A2D23CFC700618009 /* Quarry */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		9A529E7D2D23CFC700618009 /* quarry */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				9A2923022DBB8F4A0032F301 /* Exceptions for "quarry" folder in "Quarry" target */,
+			);
+			path = quarry;
+			sourceTree = "<group>";
+		};
+		9A529E912D23CFC900618009 /* quarryTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = quarryTests;
+			sourceTree = "<group>";
+		};
+		9A529E9B2D23CFC900618009 /* quarryUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = quarryUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9A529E782D23CFC700618009 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9A5DDF232E53465500812D2A /* MySQLNIO in Frameworks */,
+				9AA8038E2E46601200B6F1B4 /* SQLiteNIO in Frameworks */,
+				9AC676C52DEAD6DB009B6D2A /* PostgresNIO in Frameworks */,
+				9A9B35C32DA543A50052B366 /* yyjson in Frameworks */,
+				9A25D38A2F65C24A003259CB /* ConvexMobile in Frameworks */,
+				9A0216502DFD9BF300F7FCF3 /* BSON in Frameworks */,
+				9AF175BF2D895DB500351A82 /* LanguageSupport in Frameworks */,
+				9AEDB42C2F3C9B5400F0E0E1 /* BSON in Frameworks */,
+				9AE4BF772D25281600EA996E /* MongoKitten in Frameworks */,
+				9A44A0BE2D2E91F900E04DC8 /* UInt128 in Frameworks */,
+				9AE4BF712D25281600EA996E /* Meow in Frameworks */,
+				9AE4BF732D25281600EA996E /* MongoClient in Frameworks */,
+				9AF175BD2D895D7200351A82 /* CodeEditorView in Frameworks */,
+				9AE4BF752D25281600EA996E /* MongoCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9A529E8B2D23CFC900618009 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9A529E952D23CFC900618009 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9A529E722D23CFC700618009 = {
+			isa = PBXGroup;
+			children = (
+				9A529E7D2D23CFC700618009 /* quarry */,
+				9A529E912D23CFC900618009 /* quarryTests */,
+				9A529E9B2D23CFC900618009 /* quarryUITests */,
+				9AAF96EC2E7D4D62002A48C1 /* Frameworks */,
+				9A529E7C2D23CFC700618009 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9A529E7C2D23CFC700618009 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9A529E7B2D23CFC700618009 /* Quarry.app */,
+				9A529E8E2D23CFC900618009 /* QuarryTests.xctest */,
+				9A529E982D23CFC900618009 /* QuarryUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9AAF96EC2E7D4D62002A48C1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9A529E7A2D23CFC700618009 /* Quarry */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9A529EA22D23CFC900618009 /* Build configuration list for PBXNativeTarget "Quarry" */;
+			buildPhases = (
+				9A529E772D23CFC700618009 /* Sources */,
+				9A529E782D23CFC700618009 /* Frameworks */,
+				9A529E792D23CFC700618009 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				9A529E7D2D23CFC700618009 /* quarry */,
+			);
+			name = Quarry;
+			packageProductDependencies = (
+				9AE4BF702D25281600EA996E /* Meow */,
+				9AE4BF722D25281600EA996E /* MongoClient */,
+				9AE4BF742D25281600EA996E /* MongoCore */,
+				9AE4BF762D25281600EA996E /* MongoKitten */,
+				9A44A0BD2D2E91F900E04DC8 /* UInt128 */,
+				9AF175BC2D895D7200351A82 /* CodeEditorView */,
+				9AF175BE2D895DB500351A82 /* LanguageSupport */,
+				9A9B35C22DA543A50052B366 /* yyjson */,
+				9AC676C42DEAD6DB009B6D2A /* PostgresNIO */,
+				9A02164F2DFD9BF300F7FCF3 /* BSON */,
+				9AA8038D2E46601200B6F1B4 /* SQLiteNIO */,
+				9A5DDF222E53465500812D2A /* MySQLNIO */,
+				9AEDB42B2F3C9B5400F0E0E1 /* BSON */,
+				9A25D3892F65C24A003259CB /* ConvexMobile */,
+			);
+			productName = collection;
+			productReference = 9A529E7B2D23CFC700618009 /* Quarry.app */;
+			productType = "com.apple.product-type.application";
+		};
+		9A529E8D2D23CFC900618009 /* QuarryTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9A529EA52D23CFC900618009 /* Build configuration list for PBXNativeTarget "QuarryTests" */;
+			buildPhases = (
+				9A529E8A2D23CFC900618009 /* Sources */,
+				9A529E8B2D23CFC900618009 /* Frameworks */,
+				9A529E8C2D23CFC900618009 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9A529E902D23CFC900618009 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				9A529E912D23CFC900618009 /* quarryTests */,
+			);
+			name = QuarryTests;
+			packageProductDependencies = (
+			);
+			productName = collectionTests;
+			productReference = 9A529E8E2D23CFC900618009 /* QuarryTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		9A529E972D23CFC900618009 /* QuarryUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9A529EA82D23CFC900618009 /* Build configuration list for PBXNativeTarget "QuarryUITests" */;
+			buildPhases = (
+				9A529E942D23CFC900618009 /* Sources */,
+				9A529E952D23CFC900618009 /* Frameworks */,
+				9A529E962D23CFC900618009 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9A529E9A2D23CFC900618009 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				9A529E9B2D23CFC900618009 /* quarryUITests */,
+			);
+			name = QuarryUITests;
+			packageProductDependencies = (
+			);
+			productName = collectionUITests;
+			productReference = 9A529E982D23CFC900618009 /* QuarryUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9A529E732D23CFC700618009 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1620;
+				LastUpgradeCheck = 1640;
+				TargetAttributes = {
+					9A529E7A2D23CFC700618009 = {
+						CreatedOnToolsVersion = 16.2;
+						LastSwiftMigration = 1620;
+					};
+					9A529E8D2D23CFC900618009 = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 9A529E7A2D23CFC700618009;
+					};
+					9A529E972D23CFC900618009 = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 9A529E7A2D23CFC700618009;
+					};
+				};
+			};
+			buildConfigurationList = 9A529E762D23CFC700618009 /* Build configuration list for PBXProject "Quarry" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 9A529E722D23CFC700618009;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				9AE4BF6F2D25269A00EA996E /* XCRemoteSwiftPackageReference "MongoKitten" */,
+				9A44A0BC2D2E91F900E04DC8 /* XCRemoteSwiftPackageReference "UInt128" */,
+				9AF175BB2D895D7200351A82 /* XCRemoteSwiftPackageReference "CodeEditorView" */,
+				9A9B35C12DA543A50052B366 /* XCRemoteSwiftPackageReference "yyjson" */,
+				9AC676C32DEAD6DB009B6D2A /* XCRemoteSwiftPackageReference "postgres-nio" */,
+				9AA8038C2E46601200B6F1B4 /* XCRemoteSwiftPackageReference "sqlite-nio" */,
+				9A5DDF212E53465500812D2A /* XCRemoteSwiftPackageReference "mysql-nio" */,
+				9AEDB42A2F3C9B5300F0E0E1 /* XCLocalSwiftPackageReference "BSON" */,
+				9A25D3882F65C24A003259CB /* XCRemoteSwiftPackageReference "convex-swift" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 9A529E7C2D23CFC700618009 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9A529E7A2D23CFC700618009 /* Quarry */,
+				9A529E8D2D23CFC900618009 /* QuarryTests */,
+				9A529E972D23CFC900618009 /* QuarryUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9A529E792D23CFC700618009 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9A529E8C2D23CFC900618009 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9A529E962D23CFC900618009 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9A529E772D23CFC700618009 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9A529E8A2D23CFC900618009 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9A529E942D23CFC900618009 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9A529E902D23CFC900618009 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9A529E7A2D23CFC700618009 /* Quarry */;
+			targetProxy = 9A529E8F2D23CFC900618009 /* PBXContainerItemProxy */;
+		};
+		9A529E9A2D23CFC900618009 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9A529E7A2D23CFC700618009 /* Quarry */;
+			targetProxy = 9A529E992D23CFC900618009 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		9A529EA02D23CFC900618009 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_ENTITLEMENTS[sdk=*]" = "";
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = NO;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.1;
+				MARKETING_VERSION = "$(MARKETING_VERSION)";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		9A529EA12D23CFC900618009 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = NO;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.1;
+				MARKETING_VERSION = "$(MARKETING_VERSION)";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		9A529EA32D23CFC900618009 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 9A529E7D2D23CFC700618009 /* quarry */;
+			baseConfigurationReferenceRelativePath = version.xcconfig;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = quarry/Resources/quarry.entitlements;
+				"CODE_SIGN_ENTITLEMENTS[sdk=*]" = quarry/Resources/quarry.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"quarry/Resources/Preview Content\"";
+				DEVELOPMENT_TEAM = 6ECNB95892;
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_INCOMING_NETWORK_CONNECTIONS = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SELECTED_FILES = readwrite;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = quarry/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Quarry;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright \U00a9 2026 RIBBAN AB. Based on Pluk, \U00a9 Pluk, Inc. Licensed under GNU AGPL v3.0.";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_NAME = Quarry;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		9A529EA42D23CFC900618009 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 9A529E7D2D23CFC700618009 /* quarry */;
+			baseConfigurationReferenceRelativePath = version.xcconfig;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = quarry/Resources/quarry.entitlements;
+				"CODE_SIGN_ENTITLEMENTS[sdk=*]" = quarry/Resources/quarry.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"quarry/Resources/Preview Content\"";
+				DEVELOPMENT_TEAM = 6ECNB95892;
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_INCOMING_NETWORK_CONNECTIONS = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SELECTED_FILES = readwrite;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = quarry/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Quarry;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright \U00a9 2026 RIBBAN AB. Based on Pluk, \U00a9 Pluk, Inc. Licensed under GNU AGPL v3.0.";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_NAME = Quarry;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		9A529EA62D23CFC900618009 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = doc.collectionTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 6.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Quarry.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Quarry";
+			};
+			name = Debug;
+		};
+		9A529EA72D23CFC900618009 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = doc.collectionTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 6.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Quarry.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Quarry";
+			};
+			name = Release;
+		};
+		9A529EA92D23CFC900618009 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = doc.collectionUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 6.0;
+				TEST_TARGET_NAME = collection;
+			};
+			name = Debug;
+		};
+		9A529EAA2D23CFC900618009 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = doc.collectionUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 6.0;
+				TEST_TARGET_NAME = collection;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9A529E762D23CFC700618009 /* Build configuration list for PBXProject "Quarry" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9A529EA02D23CFC900618009 /* Debug */,
+				9A529EA12D23CFC900618009 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9A529EA22D23CFC900618009 /* Build configuration list for PBXNativeTarget "Quarry" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9A529EA32D23CFC900618009 /* Debug */,
+				9A529EA42D23CFC900618009 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9A529EA52D23CFC900618009 /* Build configuration list for PBXNativeTarget "QuarryTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9A529EA62D23CFC900618009 /* Debug */,
+				9A529EA72D23CFC900618009 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9A529EA82D23CFC900618009 /* Build configuration list for PBXNativeTarget "QuarryUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9A529EA92D23CFC900618009 /* Debug */,
+				9A529EAA2D23CFC900618009 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		9AEDB42A2F3C9B5300F0E0E1 /* XCLocalSwiftPackageReference "BSON" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = BSON;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		9A25D3882F65C24A003259CB /* XCRemoteSwiftPackageReference "convex-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pluk-inc/convex-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.8.8;
+			};
+		};
+		9A44A0BC2D2E91F900E04DC8 /* XCRemoteSwiftPackageReference "UInt128" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mgriebling/UInt128.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.2.0;
+			};
+		};
+		9A5DDF212E53465500812D2A /* XCRemoteSwiftPackageReference "mysql-nio" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/vapor/mysql-nio";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.7.2;
+			};
+		};
+		9A9B35C12DA543A50052B366 /* XCRemoteSwiftPackageReference "yyjson" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ibireme/yyjson";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.10.0;
+			};
+		};
+		9AA8038C2E46601200B6F1B4 /* XCRemoteSwiftPackageReference "sqlite-nio" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/vapor/sqlite-nio.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.11.8;
+			};
+		};
+		9AC676C32DEAD6DB009B6D2A /* XCRemoteSwiftPackageReference "postgres-nio" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/vapor/postgres-nio.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.30.1;
+			};
+		};
+		9AE4BF6F2D25269A00EA996E /* XCRemoteSwiftPackageReference "MongoKitten" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/orlandos-nl/MongoKitten.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.9.9;
+			};
+		};
+		9AF175BB2D895D7200351A82 /* XCRemoteSwiftPackageReference "CodeEditorView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mchakravarty/CodeEditorView.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.15.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		9A02164F2DFD9BF300F7FCF3 /* BSON */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BSON;
+		};
+		9A25D3892F65C24A003259CB /* ConvexMobile */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9A25D3882F65C24A003259CB /* XCRemoteSwiftPackageReference "convex-swift" */;
+			productName = ConvexMobile;
+		};
+		9A44A0BD2D2E91F900E04DC8 /* UInt128 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9A44A0BC2D2E91F900E04DC8 /* XCRemoteSwiftPackageReference "UInt128" */;
+			productName = UInt128;
+		};
+		9A5DDF222E53465500812D2A /* MySQLNIO */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9A5DDF212E53465500812D2A /* XCRemoteSwiftPackageReference "mysql-nio" */;
+			productName = MySQLNIO;
+		};
+		9A9B35C22DA543A50052B366 /* yyjson */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9A9B35C12DA543A50052B366 /* XCRemoteSwiftPackageReference "yyjson" */;
+			productName = yyjson;
+		};
+		9AA8038D2E46601200B6F1B4 /* SQLiteNIO */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9AA8038C2E46601200B6F1B4 /* XCRemoteSwiftPackageReference "sqlite-nio" */;
+			productName = SQLiteNIO;
+		};
+		9AC676C42DEAD6DB009B6D2A /* PostgresNIO */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9AC676C32DEAD6DB009B6D2A /* XCRemoteSwiftPackageReference "postgres-nio" */;
+			productName = PostgresNIO;
+		};
+		9AE4BF702D25281600EA996E /* Meow */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9AE4BF6F2D25269A00EA996E /* XCRemoteSwiftPackageReference "MongoKitten" */;
+			productName = Meow;
+		};
+		9AE4BF722D25281600EA996E /* MongoClient */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9AE4BF6F2D25269A00EA996E /* XCRemoteSwiftPackageReference "MongoKitten" */;
+			productName = MongoClient;
+		};
+		9AE4BF742D25281600EA996E /* MongoCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9AE4BF6F2D25269A00EA996E /* XCRemoteSwiftPackageReference "MongoKitten" */;
+			productName = MongoCore;
+		};
+		9AE4BF762D25281600EA996E /* MongoKitten */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9AE4BF6F2D25269A00EA996E /* XCRemoteSwiftPackageReference "MongoKitten" */;
+			productName = MongoKitten;
+		};
+		9AEDB42B2F3C9B5400F0E0E1 /* BSON */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BSON;
+		};
+		9AF175BC2D895D7200351A82 /* CodeEditorView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9AF175BB2D895D7200351A82 /* XCRemoteSwiftPackageReference "CodeEditorView" */;
+			productName = CodeEditorView;
+		};
+		9AF175BE2D895DB500351A82 /* LanguageSupport */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9AF175BB2D895D7200351A82 /* XCRemoteSwiftPackageReference "CodeEditorView" */;
+			productName = LanguageSupport;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 9A529E732D23CFC700618009 /* Project object */;
+}

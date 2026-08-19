@@ -1,0 +1,29 @@
+// Quarry Version Configuration
+// This file contains the version and build number for the app
+
+MARKETING_VERSION = 0.0.50
+CURRENT_PROJECT_VERSION = 313
+
+// Domain and GitHub configuration
+APP_DOMAIN = ribban.co/quarry
+GITHUB_URL = https://github.com/ribban-co/Quarry
+
+// Bundle identifier
+PRODUCT_BUNDLE_IDENTIFIER = se.ribban.quarry
+DEVELOPMENT_TEAM = 6ECNB95892
+
+// Official-build service configuration. Local values live in the ignored
+// Secrets.xcconfig file; source builds remain functional without it.
+POSTHOG_API_KEY =
+SENTRY_DSN =
+WORKOS_CLIENT_ID_DEBUG =
+WORKOS_CLIENT_ID_RELEASE =
+CONVEX_OAUTH_CLIENT_ID =
+CONVEX_OAUTH_CLIENT_SECRET =
+BEDROCK_IDENTITY_POOL_ID =
+BEDROCK_ROLE_ARN =
+
+#include? "Secrets.xcconfig"
+
+WORKOS_CLIENT_ID[config=Debug] = $(WORKOS_CLIENT_ID_DEBUG)
+WORKOS_CLIENT_ID[config=Release] = $(WORKOS_CLIENT_ID_RELEASE)

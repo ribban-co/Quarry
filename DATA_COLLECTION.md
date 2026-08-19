@@ -1,8 +1,8 @@
 # Data Collection
 
-Pluk can be built without any Pluk-hosted service configuration.
+Quarry can be built without any Quarry-hosted service configuration.
 
-In a community build where `pluk/Secrets.xcconfig` is absent or leaves service values blank:
+In a community build where `quarry/Secrets.xcconfig` is absent or leaves service values blank:
 
 - PostHog analytics is not initialized;
 - Sentry crash reporting is not initialized;

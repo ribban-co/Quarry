@@ -28,7 +28,7 @@ CONFIGURATION="Release"
 TEAM_ID="6ECNB95892"
 SIGN_IDENTITY="Developer ID Application: RIBBAN AB ($TEAM_ID)"
 NOTARY_PROFILE="${NOTARY_PROFILE:-quarry-notary}"
-VERSION_CONFIG="pluk/version.xcconfig"
+VERSION_CONFIG="quarry/version.xcconfig"
 EXPORT_OPTIONS="scripts/ExportOptions-developer-id.plist"
 DIST_DIR="dist"
 
@@ -95,7 +95,7 @@ mkdir -p "$DIST_DIR"
 
 step "Archiving $APP_NAME $VERSION ($BUILD)"
 xcodebuild archive \
-    -project Pluk.xcodeproj \
+    -project Quarry.xcodeproj \
     -scheme "$SCHEME" \
     -configuration "$CONFIGURATION" \
     -destination 'generic/platform=macOS' \

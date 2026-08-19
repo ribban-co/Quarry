@@ -1,6 +1,6 @@
 ---
 name: 💡 Feature Request
-about: Suggest an idea for Pluk
+about: Suggest an idea for Quarry
 title: '[FEATURE] '
 labels: ['enhancement']
 assignees: ''

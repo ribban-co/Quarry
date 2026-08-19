@@ -4,7 +4,7 @@
 
 Please do not open a public issue for a suspected vulnerability or exposed credential.
 
-Email `support@pluk.sh` with:
+Email `andreas.enemyr@gmail.com` with:
 
 - a description of the issue and its impact;
 - steps or a proof of concept that reproduce it;
