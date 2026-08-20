@@ -42,6 +42,12 @@ class WindowController: NSWindowController, NSToolbarDelegate, NSToolbarItemVali
         windowControllers[window]
     }
 
+    /// Whether any main Quarry window is on screen. Auxiliary windows (settings,
+    /// logs, about) are not registered here, so they don't count.
+    static var hasVisibleManagedWindow: Bool {
+        windowControllers.keys.contains { $0.isVisible }
+    }
+
     private static func getTabManager(for window: NSWindow) -> TabManager? {
         windowTabManagers[window]
     }

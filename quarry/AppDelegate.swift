@@ -184,7 +184,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
-        true
+        false
+    }
+
+    // Clicking the Dock icon with no main window open brings Quarry back instead
+    // of leaving the app running with nothing on screen.
+    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+        if WindowController.hasVisibleManagedWindow {
+            bringAppToFront()
+        } else {
+            _ = WindowController.showHome()
+        }
+        return true
     }
 
     func applicationSupportsSecureRestorableState(_ app: NSApplication) -> Bool {
