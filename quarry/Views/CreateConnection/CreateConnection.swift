@@ -138,6 +138,23 @@ class HTTPServer: @unchecked Sendable {
     }
 }
 
+private enum ConnectionSaveError: LocalizedError {
+    case invalidForm
+    case existingConnectionNotFound
+    case keychainWriteFailed
+
+    var errorDescription: String? {
+        switch self {
+        case .invalidForm:
+            return "The connection settings are incomplete."
+        case .existingConnectionNotFound:
+            return "The saved connection could not be found. Close this editor and try again."
+        case .keychainWriteFailed:
+            return "Quarry couldn't securely save the password in Keychain. The connection was not updated."
+        }
+    }
+}
+
 struct CreateConnection: View {
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     @Environment(\.modelContext) private var modelContext
@@ -188,6 +205,8 @@ struct CreateConnectionForm: View {
     @State private var isTestingConnection = false
     @State private var testSucceeded: Bool? = nil
     @State private var currentTestID: UUID?
+    @State private var isSavingConnection = false
+    @State private var saveErrorMessage: String?
     
     @State private var databaseService = DatabaseService()
     
@@ -484,6 +503,17 @@ struct CreateConnectionForm: View {
                 resetForm()
             }
         }
+        .alert(
+            "Couldn't Save Connection",
+            isPresented: Binding(
+                get: { saveErrorMessage != nil },
+                set: { if !$0 { saveErrorMessage = nil } }
+            )
+        ) {
+            Button("OK", role: .cancel) { saveErrorMessage = nil }
+        } message: {
+            Text(saveErrorMessage ?? "The connection could not be saved.")
+        }
     }
     
     @Environment(\.colorScheme) var colorScheme: ColorScheme
@@ -541,14 +571,14 @@ struct CreateConnectionForm: View {
                 .buttonBorderShape(.capsule)
 
                 Button(action: saveConnection) {
-                    Text(connection != nil ? "Update Connection" : "Connect")
+                    Text(isSavingConnection ? "Saving…" : (connection != nil ? "Update Connection" : "Connect"))
                         .frame(minWidth: 80)
                 }
                 .buttonStyle(.borderedProminent)
                 .controlSize(.extraLarge)
                 .tint(Color.primaryButton)
                 .buttonBorderShape(.capsule)
-                .disabled(!isFormValid)
+                .disabled(!isFormValid || isSavingConnection)
                 .keyboardShortcut(.return, modifiers: [.command])
             }
         }
@@ -1010,8 +1040,16 @@ struct CreateConnectionForm: View {
         // Fill in missing default values before saving
         fillMissingDefaults()
 
-        Task {
-            await saveConnectionAsync()
+        isSavingConnection = true
+        saveErrorMessage = nil
+
+        Task { @MainActor in
+            do {
+                try await saveConnectionAsync()
+            } catch {
+                saveErrorMessage = error.localizedDescription
+                isSavingConnection = false
+            }
         }
     }
 
@@ -1060,29 +1098,33 @@ struct CreateConnectionForm: View {
         }
     }
 
-    private func saveConnectionAsync() async {
-        guard let databaseType = selectedDatabaseType else { return }
-        guard let databaseTypeEnum = DatabaseType(rawValue: databaseType.rawValue) else { return }
-
-        // If editing an existing connection, disconnect it first
-        let isEditingExistingConnection = connection != nil
-        if isEditingExistingConnection {
-            await onDisconnect?()
+    @MainActor
+    private func saveConnectionAsync() async throws {
+        guard let databaseType = selectedDatabaseType,
+              let databaseTypeEnum = DatabaseType(rawValue: databaseType.rawValue),
+              let selectedColor = color else {
+            throw ConnectionSaveError.invalidForm
         }
-        
+
+        let isEditingExistingConnection = connection != nil
         let savedConnection: Connection
-        if let id = connection?.persistentModelID,
-           let existing = try? modelContext.fetch(
-            FetchDescriptor<Connection>(
-                predicate: #Predicate { $0.persistentModelID == id }
-            )
-           ).first {
-            
+
+        if let connection {
+            let id = connection.persistentModelID
+            guard let existing = try modelContext.fetch(
+                FetchDescriptor<Connection>(
+                    predicate: #Predicate { $0.persistentModelID == id }
+                )
+            ).first else {
+                throw ConnectionSaveError.existingConnectionNotFound
+            }
+
             // Update existing connection
             existing.name = name
-            existing.color = color.unsafelyUnwrapped
+            existing.color = selectedColor
             existing.environment = selectedEnvironment
             existing.defaultDatabase = defaultDatabase
+            existing.updatedAt = Date()
             applySSHSettings(to: existing)
 
             // For PostgreSQL databases using field-based input, update individual fields
@@ -1092,7 +1134,7 @@ struct CreateConnectionForm: View {
                 existing.hostname = hostname
                 existing.port = port
                 existing.username = username
-                existing.password = password
+                try persistPassword(password, for: existing)
                 existing.sslMode = sslMode
                 existing.sslKeyPath = sslKeyPath
                 existing.sslCertPath = sslCertPath
@@ -1121,7 +1163,7 @@ struct CreateConnectionForm: View {
                 }
             }
 
-            try? modelContext.save()
+            try modelContext.save()
             savedConnection = existing
         } else {
             // Create new connection
@@ -1134,7 +1176,7 @@ struct CreateConnectionForm: View {
                 newConnection = Connection(
                     databaseType: databaseTypeEnum,
                     name: name,
-                    color: color.unsafelyUnwrapped,
+                    color: selectedColor,
                     environment: selectedEnvironment ?? .local,
                     hostname: hostname,
                     port: port,
@@ -1158,7 +1200,7 @@ struct CreateConnectionForm: View {
                     databaseType: databaseTypeEnum,
                     url: sanitizedURI,
                     name: name,
-                    color: color.unsafelyUnwrapped,
+                    color: selectedColor,
                     environment: selectedEnvironment ?? .local,
                     defaultDatabase: defaultDatabase
                 )
@@ -1166,27 +1208,46 @@ struct CreateConnectionForm: View {
 
             modelContext.insert(newConnection)
 
-            // Save to get persistentModelID, then store password in keychain
-            try? modelContext.save()
+            try modelContext.save()
 
             // For field-based connections, store password in keychain after getting persistentModelID
             if (databaseType == .postgres || databaseType == .supabase || databaseType == .mysql || databaseType == .redis)
                 && useFieldBasedInput
             {
-                if !password.isEmpty {
-                    newConnection.password = password
-                }
+                try persistPassword(password, for: newConnection)
             }
 
             applySSHSettings(to: newConnection)
-            try? modelContext.save()
+            try modelContext.save()
 
             savedConnection = newConnection
         }
 
+        // Only tear down the working connection after both SwiftData and the
+        // Keychain have accepted the update. A failed save must leave the
+        // current connection and editor intact.
+        if isEditingExistingConnection {
+            await onDisconnect?()
+        }
+
         onSavedConnection?(savedConnection, isEditingExistingConnection)
 
+        isSavingConnection = false
         closeForm()
+    }
+
+    private func persistPassword(_ password: String, for connection: Connection) throws {
+        let succeeded: Bool
+        if password.isEmpty {
+            succeeded = KeychainHelper.shared.delete(for: connection.keychainId)
+        } else {
+            succeeded = KeychainHelper.shared.store(password: password, for: connection.keychainId)
+                && KeychainHelper.shared.retrieve(for: connection.keychainId) == password
+        }
+
+        guard succeeded else {
+            throw ConnectionSaveError.keychainWriteFailed
+        }
     }
 
     private func closeForm() {

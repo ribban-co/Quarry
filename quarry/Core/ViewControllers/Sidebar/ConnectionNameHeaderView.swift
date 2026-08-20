@@ -1,5 +1,6 @@
 import AppKit
 import Observation
+import SwiftData
 import SwiftUI
 
 /// AppKit replacement for the SwiftUI `ConnectionNameHeader`. Renders the
@@ -401,7 +402,8 @@ final class ConnectionNameHeaderView: NSView, NSPopoverDelegate {
     }
 
     private func presentEditSheet() {
-        guard let parentWindow = window else { return }
+        guard let parentWindow = window,
+              let appDelegate = NSApp.delegate as? AppDelegate else { return }
 
         var sheetWindow: NSWindow?
         let editForm = CreateConnectionForm(
@@ -420,6 +422,7 @@ final class ConnectionNameHeaderView: NSView, NSPopoverDelegate {
             }
         )
         .frame(width: 480, height: 640)
+        .modelContainer(appDelegate.sharedModelContainer)
 
         let hostingController = NSHostingController(rootView: editForm)
         let window = NSWindow(contentViewController: hostingController)

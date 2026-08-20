@@ -69,6 +69,18 @@
                         </items>
                     </menu>
                 </menuItem>
+                <menuItem title="File" id="fIl-eM-enu">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <menu key="submenu" title="File" id="fIl-sU-bmn">
+                        <items>
+                            <menuItem title="Close Window" keyEquivalent="w" id="cLs-wI-ndw">
+                                <connections>
+                                    <action selector="performClose:" target="-1" id="cLs-aC-tn1"/>
+                                </connections>
+                            </menuItem>
+                        </items>
+                    </menu>
+                </menuItem>
                 <menuItem title="Edit" id="xM5-hg-CJI">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Edit" id="jum-Q0-PpK">
