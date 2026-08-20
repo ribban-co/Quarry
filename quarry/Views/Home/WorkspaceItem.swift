@@ -16,6 +16,22 @@ enum WorkspaceItem: Identifiable {
         }
     }
 
+    var folderId: UUID? {
+        switch self {
+        case .connection(let c): c.folderId
+        case .notebook(let n): n.folderId
+        }
+    }
+
+    /// Membership only — deliberately leaves `updatedAt` alone so filing an
+    /// item doesn't reshuffle Recents or the "Date Updated" sort.
+    func move(toFolder folderId: UUID?) {
+        switch self {
+        case .connection(let c): c.folderId = folderId
+        case .notebook(let n): n.folderId = folderId
+        }
+    }
+
     var name: String {
         switch self {
         case .connection(let c): c.name

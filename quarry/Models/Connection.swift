@@ -228,6 +228,9 @@ final class Connection {
     var containerName: String?
     var containerId: String?
 
+    /// Home workspace folder membership; nil means the item sits ungrouped.
+    var folderId: UUID?
+
     var sshEnabled: Bool = false
     var sshHost: String?
     var sshPort: String?

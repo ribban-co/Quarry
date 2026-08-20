@@ -42,6 +42,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             AgentChat.self,
             AgentMessage.self,
             RecentTableEntry.self,
+            WorkspaceFolder.self,
         ])
         let modelConfiguration = ModelConfiguration(
             schema: schema,

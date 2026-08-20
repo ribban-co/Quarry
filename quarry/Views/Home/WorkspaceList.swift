@@ -60,8 +60,13 @@ struct WorkspaceList: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.accessibilityReduceMotion) private var accessibilityReduceMotion
     @Environment(\.colorScheme) private var colorScheme
+    @Query(sort: [SortDescriptor(\WorkspaceFolder.sortIndex), SortDescriptor(\WorkspaceFolder.createdAt)])
+    private var folders: [WorkspaceFolder]
     @State private var notebookToDelete: Notebook?
     @State private var showDeleteNotebook = false
+    @State private var renamingFolderId: UUID?
+    @State private var dropTargetFolderId: UUID?
+    @State private var isUngroupedDropTargeted = false
     @State private var searchText = ""
     @State private var isSearchVisible = false
     @State private var isSearchIconHovering = false
@@ -232,6 +237,12 @@ struct WorkspaceList: View {
 
     private var createButtons: some View {
         HStack(spacing: 6) {
+            Button(action: createFolder) {
+                Label("Folder", systemImage: "plus").padding(.trailing, 4)
+            }
+            .buttonStyle(WorkspaceCreateButtonStyle(cornerRadius: ToolbarIslandMetrics.innerCornerRadius))
+            .toolbarIsland()
+
             Button(action: onCreateNotebook) {
                 Label("Notebook", systemImage: "plus").padding(.trailing, 4)
             }
@@ -329,29 +340,270 @@ struct WorkspaceList: View {
             Divider().padding(.bottom, 8)
 
             LazyVStack(spacing: 6) {
-                ForEach(displayedItems) { item in
-                    switch item {
-                    case .connection(let connection):
-                        WorkspaceConnectionRow(
-                            connection: connection,
-                            isContainerBacked: containerBackedConnectionIds.contains(connection.keychainId),
-                            isContainerStopped: stoppedContainerConnectionIds.contains(connection.keychainId),
-                            onOpen: onOpenConnection
-                        )
-                    case .notebook(let notebook):
-                        WorkspaceNotebookRow(
-                            notebook: notebook,
-                            onOpen: onOpenNotebook,
-                            onDelete: { nb in
-                                notebookToDelete = nb
-                                showDeleteNotebook = true
-                            }
-                        )
-                    }
+                ForEach(visibleFolders) { folder in
+                    folderSection(folder)
                 }
+
+                ungroupedSection
             }
         }
         .padding(.vertical, 4)
+    }
+
+    // MARK: - Grouping
+
+    private var isSearching: Bool {
+        !normalizedSearchText.isEmpty
+    }
+
+    private var folderIds: Set<UUID> {
+        Set(folders.map(\.id))
+    }
+
+    /// Folders stay listed while browsing so empty ones remain drop targets;
+    /// a search hides the ones with nothing to show.
+    private var visibleFolders: [WorkspaceFolder] {
+        guard isSearching else { return folders }
+        return folders.filter { !items(in: $0).isEmpty }
+    }
+
+    private func items(in folder: WorkspaceFolder) -> [WorkspaceItem] {
+        displayedItems.filter { $0.folderId == folder.id }
+    }
+
+    /// An item pointing at a folder that no longer exists falls back here
+    /// rather than disappearing from the list.
+    private var ungroupedItems: [WorkspaceItem] {
+        displayedItems.filter { item in
+            guard let folderId = item.folderId else { return true }
+            return !folderIds.contains(folderId)
+        }
+    }
+
+    @ViewBuilder
+    private func folderSection(_ folder: WorkspaceFolder) -> some View {
+        let children = items(in: folder)
+        let expanded = isExpanded(folder)
+
+        VStack(alignment: .leading, spacing: 6) {
+            WorkspaceFolderRow(
+                folder: folder,
+                itemCount: children.count,
+                isExpanded: expanded,
+                isRenaming: renamingFolderId == folder.id,
+                isDropTargeted: dropTargetFolderId == folder.id,
+                onToggle: { toggleExpansion(folder) },
+                onBeginRename: { renamingFolderId = folder.id },
+                onCommitRename: { commitRename(folder, to: $0) },
+                onCancelRename: { renamingFolderId = nil },
+                onPickColor: { folder.color = $0 },
+                onDelete: { deleteFolder(folder) }
+            )
+            .dropDestination(for: WorkspaceItemTransfer.self) { transfers, _ in
+                move(transfers, to: folder.id)
+                if !folder.isExpanded {
+                    withAnimation(moveAnimation) { folder.isExpanded = true }
+                }
+                return true
+            } isTargeted: { isTargeted in
+                dropTargetFolderId = isTargeted ? folder.id : nil
+            }
+
+            if expanded {
+                if children.isEmpty {
+                    Text("Drag connections and notebooks here")
+                        .font(.system(size: 12))
+                        .foregroundStyle(.tertiary)
+                        .padding(.leading, 40)
+                        .padding(.vertical, 4)
+                } else {
+                    VStack(spacing: 6) {
+                        ForEach(children) { item in
+                            itemRow(item)
+                        }
+                    }
+                    .padding(.leading, 24)
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var ungroupedSection: some View {
+        if visibleFolders.isEmpty {
+            ForEach(ungroupedItems) { item in
+                itemRow(item)
+            }
+        } else {
+            VStack(alignment: .leading, spacing: 6) {
+                Text("Ungrouped")
+                    .font(.system(size: 11, weight: .medium))
+                    .foregroundStyle(.secondary)
+                    .padding(.horizontal, 10)
+                    .padding(.top, 12)
+
+                if ungroupedItems.isEmpty {
+                    // Keeps a landing spot for dragging an item back out
+                    // once everything is filed away.
+                    Text("Drop here to remove from a folder")
+                        .font(.system(size: 12))
+                        .foregroundStyle(.tertiary)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 8)
+                } else {
+                    ForEach(ungroupedItems) { item in
+                        itemRow(item)
+                    }
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(.rect)
+            .background(
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .fill(isUngroupedDropTargeted ? Color(.separatorColor).opacity(0.25) : .clear)
+                    .padding(.horizontal, -10)
+            )
+            .dropDestination(for: WorkspaceItemTransfer.self) { transfers, _ in
+                move(transfers, to: nil)
+                return true
+            } isTargeted: { isUngroupedDropTargeted = $0 }
+        }
+    }
+
+    @ViewBuilder
+    private func itemRow(_ item: WorkspaceItem) -> some View {
+        Group {
+            switch item {
+            case .connection(let connection):
+                WorkspaceConnectionRow(
+                    connection: connection,
+                    isContainerBacked: containerBackedConnectionIds.contains(connection.keychainId),
+                    isContainerStopped: stoppedContainerConnectionIds.contains(connection.keychainId),
+                    folderMenu: folderMenu(for: item),
+                    onOpen: onOpenConnection
+                )
+            case .notebook(let notebook):
+                WorkspaceNotebookRow(
+                    notebook: notebook,
+                    folderMenu: folderMenu(for: item),
+                    onOpen: onOpenNotebook,
+                    onDelete: { nb in
+                        notebookToDelete = nb
+                        showDeleteNotebook = true
+                    }
+                )
+            }
+        }
+        .draggable(WorkspaceItemTransfer(itemId: item.id)) {
+            WorkspaceDragPreview(title: item.name)
+        }
+    }
+
+    private func folderMenu(for item: WorkspaceItem) -> WorkspaceMoveToFolderMenu {
+        WorkspaceMoveToFolderMenu(
+            folders: folders,
+            currentFolderId: item.folderId,
+            onMove: { move(item, to: $0) },
+            onMoveToNewFolder: { moveToNewFolder(item) }
+        )
+    }
+
+    // MARK: - Folder actions
+
+    private var moveAnimation: Animation {
+        accessibilityReduceMotion ? .linear(duration: 0.01) : .easeOut(duration: 0.18)
+    }
+
+    private func isExpanded(_ folder: WorkspaceFolder) -> Bool {
+        isSearching || folder.isExpanded
+    }
+
+    private func toggleExpansion(_ folder: WorkspaceFolder) {
+        // Search force-expands every folder; honouring a toggle there would
+        // silently flip state the user can't see change.
+        guard !isSearching else { return }
+        withAnimation(moveAnimation) {
+            folder.isExpanded.toggle()
+        }
+        folder.updatedAt = Date()
+    }
+
+    private func createFolder() {
+        renamingFolderId = makeFolder().id
+    }
+
+    @discardableResult
+    private func makeFolder() -> WorkspaceFolder {
+        let folder = WorkspaceFolder(
+            name: uniqueFolderName(),
+            color: nextFolderColor(),
+            sortIndex: (folders.map(\.sortIndex).max() ?? -1) + 1
+        )
+        modelContext.insert(folder)
+        return folder
+    }
+
+    private func uniqueFolderName() -> String {
+        let base = "New Folder"
+        let existingNames = Set(folders.map(\.name))
+        guard existingNames.contains(base) else { return base }
+
+        var suffix = 2
+        while existingNames.contains("\(base) \(suffix)") {
+            suffix += 1
+        }
+        return "\(base) \(suffix)"
+    }
+
+    private func nextFolderColor() -> ConnectionColor {
+        let palette: [ConnectionColor] = [.blue, .emerald, .orange, .purple, .pink, .turquoise, .yellow, .red]
+        return palette[folders.count % palette.count]
+    }
+
+    private func commitRename(_ folder: WorkspaceFolder, to name: String) {
+        let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        if !trimmedName.isEmpty {
+            folder.name = trimmedName
+            folder.updatedAt = Date()
+        }
+        renamingFolderId = nil
+    }
+
+    /// Deleting a folder never deletes its contents — they fall back to
+    /// the ungrouped section.
+    private func deleteFolder(_ folder: WorkspaceFolder) {
+        if renamingFolderId == folder.id {
+            renamingFolderId = nil
+        }
+
+        withAnimation(moveAnimation) {
+            for item in items where item.folderId == folder.id {
+                item.move(toFolder: nil)
+            }
+            modelContext.delete(folder)
+        }
+    }
+
+    private func move(_ item: WorkspaceItem, to folderId: UUID?) {
+        withAnimation(moveAnimation) {
+            item.move(toFolder: folderId)
+        }
+    }
+
+    private func move(_ transfers: [WorkspaceItemTransfer], to folderId: UUID?) {
+        let itemsById = Dictionary(items.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
+
+        withAnimation(moveAnimation) {
+            for transfer in transfers {
+                itemsById[transfer.itemId]?.move(toFolder: folderId)
+            }
+        }
+    }
+
+    private func moveToNewFolder(_ item: WorkspaceItem) {
+        let folder = makeFolder()
+        move(item, to: folder.id)
+        renamingFolderId = folder.id
     }
 
     private func showSearch() {
@@ -550,6 +802,7 @@ private struct WorkspaceRow<Icon: View, ContextMenu: View>: View {
 
 struct WorkspaceNotebookRow: View {
     let notebook: Notebook
+    var folderMenu: WorkspaceMoveToFolderMenu?
     let onOpen: (Notebook) -> Void
     let onDelete: (Notebook) -> Void
 
@@ -568,6 +821,12 @@ struct WorkspaceNotebookRow: View {
                 onOpen(notebook)
             } label: {
                 Label("Open", systemImage: "arrow.up.forward.square")
+            }
+
+            if let folderMenu {
+                Divider()
+
+                folderMenu
             }
 
             Divider()
@@ -613,6 +872,7 @@ struct WorkspaceConnectionRow: View {
     let connection: Connection
     var isContainerBacked: Bool = false
     var isContainerStopped: Bool = false
+    var folderMenu: WorkspaceMoveToFolderMenu?
     let onOpen: (Connection) -> Void
 
     @Environment(\.modelContext) private var modelContext
@@ -653,6 +913,12 @@ struct WorkspaceConnectionRow: View {
                 Label("Connect", systemImage: "arrow.up.forward.square")
             }
             .disabled(isContainerStopped)
+
+            if let folderMenu {
+                Divider()
+
+                folderMenu
+            }
 
             Divider()
 

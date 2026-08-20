@@ -37,6 +37,9 @@ final class Notebook {
     var isPublished: Bool = false
     var lastRefreshedAt: Date?
 
+    /// Home workspace folder membership; nil means the item sits ungrouped.
+    var folderId: UUID?
+
     init(title: String = "Untitled Notebook", description: String = "", status: NotebookStatus = .exploratory) {
         self.title = title
         self.descriptionText = description
